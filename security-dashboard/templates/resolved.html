@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Resolved — SecureShield{% endblock %}
+{% block page_title %}Resolved Incidents{% endblock %}
+{% block content %}
+<div class="panel">
+  <div class="panel-header">
+    <div><div class="panel-title">Resolved Incidents</div><div class="panel-sub">{{ logs|length }} resolved</div></div>
+  </div>
+  <table class="atk-table">
+    <thead>
+      <tr><th>#</th><th>Type</th><th>Payload</th><th>Severity</th><th>IP</th><th>Detected</th><th>Resolved At</th></tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td style="font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:10px">#{{ "%03d"|format(loop.index) }}</td>
+        <td>
+          {% if 'SQL' in log.type %}<span class="type-badge sqli">💉 SQLi</span>
+          {% elif 'XSS' in log.type or 'Script' in log.type %}<span class="type-badge xss">📜 XSS</span>
+          {% elif 'Brute' in log.type %}<span class="type-badge brute">🔑 Brute</span>
+          {% elif 'HTML' in log.type %}<span class="type-badge html">🖊️ HTML</span>
+          {% else %}<span class="type-badge other">⚠️ {{ log.type }}</span>{% endif %}
+        </td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">{{ log.detail }}</td>
+        <td><span class="sev-badge {{ log.severity }}">{{ log.severity|upper }}</span></td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent2)">{{ log.ip or '—' }}</td>
+        <td style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace">{{ log.timestamp[:16] if log.timestamp else '—' }}</td>
+        <td style="font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace">{{ log.resolved_at[:16] if log.resolved_at else '—' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:48px">No resolved incidents yet</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Analytics — SecureShield{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+{% block content %}
+<style>
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:22px; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+</style>
+
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-ico">📈</div><div class="stat-lbl">Detection Rate</div><div class="stat-val" style="color:var(--blue)">100%</div><div style="font-size:11px;color:var(--muted)">All attacks caught</div></div>
+  <div class="stat-card"><div class="stat-ico">⚡</div><div class="stat-lbl">Avg Response</div><div class="stat-val" style="color:var(--green)">0.4s</div><div style="font-size:11px;color:var(--muted)">Fast detection</div></div>
+  <div class="stat-card"><div class="stat-ico">🎯</div><div class="stat-lbl">False Positives</div><div class="stat-val" style="color:var(--orange)">0</div><div style="font-size:11px;color:var(--muted)">0% false positive rate</div></div>
+  <div class="stat-card"><div class="stat-ico">🔢</div><div class="stat-lbl">Rules Active</div><div class="stat-val" style="color:var(--purple)">12</div><div style="font-size:11px;color:var(--muted)">WAF rules running</div></div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">Attack Volume by Hour</div></div>
+    <div id="hourBars" style="display:flex;align-items:flex-end;gap:4px;height:120px;padding-top:10px"></div>
+    <div id="hourLabels" style="display:flex;gap:4px;margin-top:6px"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">Attack Type Distribution</div></div>
+    {% for type, count in stats.by_type.items() %}
+      {% set pct = ((count / (stats.total or 1)) * 100) | int ~ '%' %}
+      {% if 'SQL' in type %}
+        {% set bar_bg = 'var(--red)' %}{% set badge_class = 'sqli' %}{% set badge_icon = '💉' %}{% set badge_label = 'SQLi' %}
+      {% elif 'XSS' in type or 'Script' in type %}
+        {% set bar_bg = 'var(--purple)' %}{% set badge_class = 'xss' %}{% set badge_icon = '📜' %}{% set badge_label = 'XSS' %}
+      {% elif 'Brute' in type %}
+        {% set bar_bg = 'var(--orange)' %}{% set badge_class = 'brute' %}{% set badge_icon = '🔑' %}{% set badge_label = 'Brute' %}
+      {% elif 'HTML' in type %}
+        {% set bar_bg = 'var(--yellow)' %}{% set badge_class = 'html' %}{% set badge_icon = '🖊️' %}{% set badge_label = 'HTML' %}
+      {% else %}
+        {% set bar_bg = 'var(--accent)' %}{% set badge_class = 'other' %}{% set badge_icon = '⚠️' %}{% set badge_label = type %}
+      {% endif %}
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="width:100px;font-size:11px;color:var(--muted)">{{ type[:14] }}</div>
+        <div style="flex:1;height:7px;background:var(--bg4);border-radius:4px;overflow:hidden">
+          <div style="width:{{ pct }};height:100%;background:{{ bar_bg }};border-radius:4px"></div>
+        </div>
+        <div style="font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace">{{ count }}</div>
+        <span class="type-badge {{ badge_class }}">{{ badge_icon }} {{ badge_label }}</span>
+      </div>
+    {% else %}
+      <div style="color:var(--muted);font-size:13px;text-align:center;padding:40px">Perform attacks in NexaBank to generate data</div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+var hourly = {{ hourly|safe }};
+var keys = Object.keys(hourly);
+var vals = Object.values(hourly);
+var max = 1;
+var i;
+for (i = 0; i < vals.length; i++) { if (vals[i] > max) max = vals[i]; }
+var barsDiv   = document.getElementById('hourBars');
+var labelsDiv = document.getElementById('hourLabels');
+if (keys.length === 0) {
+  barsDiv.innerHTML = '<div style="color:#6B7080;font-size:12px;margin:auto">No data yet</div>';
+} else {
+  for (i = 0; i < keys.length; i++) {
+    var h = Math.round((vals[i] / max) * 110);
+    if (h < 4) h = 4;
+    var ratio = vals[i] / max;
+    var color = ratio > 0.7 ? '#FF4B6E' : ratio > 0.4 ? '#FF8A4B' : '#6378FF';
+    var bar = document.createElement('div');
+    bar.style.flex = '1';
+    bar.style.height = h + 'px';
+    bar.style.borderRadius = '3px 3px 0 0';
+    bar.style.background = color;
+    barsDiv.appendChild(bar);
+    var lbl = document.createElement('div');
+    lbl.style.flex = '1';
+    lbl.style.fontSize = '9px';
+    lbl.style.color = '#6B7080';
+    lbl.style.textAlign = 'center';
+    lbl.textContent = keys[i];
+    labelsDiv.appendChild(lbl);
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}SecureShield{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060810; --bg2:#0C0F1A; --bg3:#111526; --bg4:#161B2E;
+  --border:rgba(99,120,255,0.12); --border2:rgba(99,120,255,0.22);
+  --accent:#6378FF; --accent2:#8B9FFF; --text:#E2E4F0; --muted:#6B7080;
+  --red:#FF4B6E; --orange:#FF8A4B; --yellow:#FFD04B;
+  --green:#4BFFA5; --blue:#4BB8FF; --purple:#C04BFF;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Space Grotesk',sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; }
+body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(99,120,255,0.007) 2px,rgba(99,120,255,0.007) 4px); }
+.sidebar { width:240px; min-height:100vh; background:var(--bg2); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; left:0; top:0; bottom:0; z-index:100; }
+.sidebar-logo { padding:24px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+.logo-icon { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--purple)); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 0 20px rgba(99,120,255,0.3); }
+.logo-text { font-size:16px; font-weight:700; }
+.logo-sub { font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+.sidebar-nav { padding:16px 10px; flex:1; }
+.nav-section { font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); padding:0 10px; margin:14px 0 6px; }
+.nav-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500; color:var(--muted); transition:all 0.2s; margin-bottom:2px; text-decoration:none; }
+.nav-item:hover { background:rgba(99,120,255,0.08); color:var(--text); }
+.nav-item.active { background:rgba(99,120,255,0.15); color:var(--accent2); border:1px solid rgba(99,120,255,0.2); }
+.nav-badge { margin-left:auto; background:var(--red); color:white; font-size:10px; font-weight:700; padding:2px 6px; border-radius:100px; }
+.sidebar-footer { padding:18px; border-top:1px solid var(--border); }
+.status-dot { width:8px; height:8px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(75,255,165,0.4); } 50%{ opacity:0.7; box-shadow:0 0 0 6px rgba(75,255,165,0); } }
+.main { margin-left:240px; flex:1; position:relative; z-index:1; }
+.topbar { height:62px; background:var(--bg2); border-bottom:1px solid var(--border); padding:0 28px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+.topbar-title { font-size:17px; font-weight:700; }
+.topbar-right { display:flex; align-items:center; gap:14px; }
+.threat-badge { display:flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; }
+.threat-badge.critical { background:rgba(255,75,110,0.15); color:var(--red); border:1px solid rgba(255,75,110,0.3); }
+.threat-badge.safe { background:rgba(75,255,165,0.15); color:var(--green); border:1px solid rgba(75,255,165,0.3); }
+.topbar-btn { padding:7px 16px; background:var(--accent); color:white; border:none; border-radius:8px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.topbar-btn:hover { background:var(--accent2); }
+.topbar-btn.ghost { background:var(--bg3); color:var(--text); border:1px solid var(--border); }
+.page-content { padding:28px; }
+.panel { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:22px; }
+.panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+.panel-title { font-size:14px; font-weight:700; }
+.panel-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.sev-badge { padding:3px 9px; border-radius:5px; font-size:10px; font-weight:700; display:inline-block; font-family:'JetBrains Mono',monospace; }
+.sev-badge.critical { background:rgba(255,75,110,0.15); color:var(--red); border:1px solid rgba(255,75,110,0.2); }
+.sev-badge.high { background:rgba(255,138,75,0.15); color:var(--orange); border:1px solid rgba(255,138,75,0.2); }
+.sev-badge.medium { background:rgba(255,208,75,0.15); color:var(--yellow); }
+.sev-badge.low { background:rgba(75,255,165,0.15); color:var(--green); }
+.type-badge { padding:3px 9px; border-radius:5px; font-size:11px; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+.type-badge.sqli  { background:rgba(255,75,110,0.12);  color:var(--red); }
+.type-badge.xss   { background:rgba(192,75,255,0.12);  color:var(--purple); }
+.type-badge.brute { background:rgba(255,138,75,0.12);  color:var(--orange); }
+.type-badge.html  { background:rgba(255,208,75,0.12);  color:var(--yellow); }
+.type-badge.csrf  { background:rgba(75,184,255,0.12);  color:var(--blue); }
+.type-badge.other { background:rgba(99,120,255,0.12);  color:var(--accent2); }
+.type-badge.default { background:rgba(99,120,255,0.12); color:var(--accent2); }
+.status-badge { padding:3px 9px; border-radius:5px; font-size:11px; font-weight:600; }
+.status-badge.active   { background:rgba(255,75,110,0.15); color:var(--red); }
+.status-badge.resolved { background:rgba(75,255,165,0.15); color:var(--green); }
+.atk-table { width:100%; border-collapse:collapse; }
+.atk-table th { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:600; padding:8px 14px; text-align:left; border-bottom:1px solid var(--border); }
+.atk-table td { padding:12px 14px; border-bottom:1px solid rgba(99,120,255,0.05); font-size:12px; vertical-align:middle; }
+.atk-table tr:hover td { background:rgba(99,120,255,0.03); }
+.atk-table tr:last-child td { border-bottom:none; }
+.resolve-btn { padding:4px 10px; border:1px solid rgba(75,255,165,0.3); background:rgba(75,255,165,0.08); color:var(--green); border-radius:5px; cursor:pointer; font-size:11px; font-weight:600; font-family:'Space Grotesk',sans-serif; transition:all 0.2s; }
+.resolve-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.view-btn { padding:4px 10px; border:1px solid var(--border); background:transparent; color:var(--muted); border-radius:5px; cursor:pointer; font-size:11px; font-family:'Space Grotesk',sans-serif; transition:all 0.2s; text-decoration:none; display:inline-block; }
+.view-btn:hover { border-color:var(--accent); color:var(--accent); }
+.stat-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px; position:relative; overflow:hidden; transition:all 0.3s; }
+.stat-card:hover { border-color:var(--border2); transform:translateY(-2px); }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+.stat-card.red::before    { background:linear-gradient(90deg,var(--red),transparent); }
+.stat-card.orange::before { background:linear-gradient(90deg,var(--orange),transparent); }
+.stat-card.green::before  { background:linear-gradient(90deg,var(--green),transparent); }
+.stat-card.purple::before { background:linear-gradient(90deg,var(--purple),transparent); }
+.stat-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+.stat-val { font-size:32px; font-weight:700; font-family:'JetBrains Mono',monospace; margin-bottom:4px; }
+.stat-ico { position:absolute; right:18px; top:18px; font-size:26px; opacity:0.25; }
+.alert-bar { background:rgba(255,75,110,0.07); border:1px solid rgba(255,75,110,0.18); border-radius:10px; padding:11px 18px; margin-bottom:22px; display:flex; align-items:center; gap:12px; }
+.alert-lbl { font-size:10px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:1px; white-space:nowrap; flex-shrink:0; }
+.alert-text { font-size:12px; color:var(--text); font-family:'JetBrains Mono',monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.toast-wrap { position:fixed; top:18px; right:18px; z-index:999; display:flex; flex-direction:column; gap:10px; }
+.toast { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:14px 18px; min-width:300px; display:flex; align-items:flex-start; gap:12px; animation:tIn 0.3s ease; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+@keyframes tIn { from{ transform:translateX(100%); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+.toast.danger  { border-left:3px solid var(--red); }
+.toast.success { border-left:3px solid var(--green); }
+.toast.info    { border-left:3px solid var(--accent); }
+.toast.warning { border-left:3px solid var(--yellow); }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+</style>
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🛡️</div>
+    <div>
+      <div class="logo-text">SecureShield</div>
+      <div class="logo-sub">EHPT Dashboard v2.0</div>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <a href="/" class="nav-item {% if request.endpoint=='home' %}active{% endif %}"><span>📊</span> Overview</a>
+    <a href="/attacks" class="nav-item {% if request.endpoint=='attacks' %}active{% endif %}"><span>🚨</span> Attack Log
+      {% if stats.active > 0 %}<span class="nav-badge">{{ stats.active }}</span>{% endif %}
+    </a>
+    <a href="/analytics" class="nav-item {% if request.endpoint=='analytics' %}active{% endif %}"><span>📈</span> Analytics</a>
+    <div class="nav-section">Defense</div>
+    <a href="/threats" class="nav-item {% if request.endpoint=='threats' %}active{% endif %}"><span>🎯</span> Threat Intel</a>
+    <a href="/rules" class="nav-item {% if request.endpoint=='rules' %}active{% endif %}"><span>⚙️</span> WAF Rules</a>
+    <a href="/resolved" class="nav-item {% if request.endpoint=='resolved' %}active{% endif %}"><span>✅</span> Resolved</a>
+    <div class="nav-section">Bank App</div>
+    <a href="http://127.0.0.1:5000" target="_blank" class="nav-item"><span>🏦</span> Open NexaBank ↗</a>
+  </div>
+  <div class="sidebar-footer">
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)">
+      <div class="status-dot"></div> Monitoring Active
+    </div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;font-family:'JetBrains Mono',monospace" id="clockStr">--:--:--</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">{% block page_title %}Dashboard{% endblock %}</div>
+    <div class="topbar-right">
+      <span style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace" id="topClock"></span>
+      {% if stats.active > 0 %}
+      <div class="threat-badge critical">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.5s infinite;display:inline-block"></span>
+        CRITICAL THREAT
+      </div>
+      {% else %}
+      <div class="threat-badge safe">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span>
+        SYSTEM SECURE
+      </div>
+      {% endif %}
+      <a href="/api/logs" class="topbar-btn ghost">Export JSON</a>
+      <button onclick="clearLogs()" class="topbar-btn ghost">Clear Logs</button>
+    </div>
+  </div>
+  <div class="page-content">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script>
+function showToast(title, msg, type) {
+  type = type || 'info';
+  var icons = { danger:'🚨', success:'✅', info:'ℹ️', warning:'⚠️' };
+  var t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = '<span style="font-size:16px">' + (icons[type]||'ℹ️') + '</span><div style="flex:1"><div style="font-size:12px;font-weight:700;margin-bottom:3px">' + title + '</div><div style="font-size:11px;color:var(--muted)">' + msg + '</div></div><button onclick="this.parentElement.remove()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px">✕</button>';
+  document.getElementById('toastWrap').appendChild(t);
+  setTimeout(function() { if(t.parentElement) t.remove(); }, 5000);
+}
+
+function clearLogs() {
+  if (!confirm('Clear all attack logs?')) return;
+  fetch('/api/clear', { method:'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.success) {
+        showToast('Cleared', 'All logs removed successfully', 'success');
+        setTimeout(function() { location.reload(); }, 1200);
+      } else {
+        showToast('Error', 'Could not clear logs', 'danger');
+      }
+    });
+}
+
+function resolveAttack(id) {
+  fetch('/api/resolve/' + id, { method:'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.success) {
+        showToast('Resolved ✓', 'Attack marked as resolved', 'success');
+        setTimeout(function() { location.reload(); }, 1000);
+      } else {
+        showToast('Error', 'Could not resolve attack', 'danger');
+      }
+    });
+}
+
+setInterval(function() {
+  var now = new Date();
+  var s = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' IST';
+  var c = document.getElementById('clockStr'); if (c) c.textContent = s;
+  var t = document.getElementById('topClock'); if (t) t.textContent = s;
+}, 1000);
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

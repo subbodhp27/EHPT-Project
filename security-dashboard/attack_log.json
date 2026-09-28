@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1778735598014,
+    "type": "Recon",
+    "detail": "Nmap scan detected",
+    "severity": "medium",
+    "timestamp": "2026-05-14T10:43:18.014907",
+    "ip": "192.168.47.129",
+    "resolved": false
+  },
+  {
+    "id": 1778735533218,
+    "type": "TEST",
+    "detail": "manual attack",
+    "severity": "medium",
+    "timestamp": "2026-05-14T10:42:13.218599",
+    "ip": "1.1.1.1",
+    "resolved": false
+  },
+  {
+    "id": 1778735374265,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<img src=x onerror=alert(1)>'",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:39:34.261138",
+    "ip": "192.168.47.130",
+    "resolved": false
+  },
+  {
+    "id": 1778734930630,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: 'curl -b cookies.txt -X POST http://192.168.47.1:5000/comment -d \"text=<h1>Hacked</h1>\"'",
+    "severity": "medium",
+    "timestamp": "2026-05-14T10:32:10.625737",
+    "ip": "192.168.47.130",
+    "resolved": false
+  },
+  {
+    "id": 1778734883273,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert(1)</script>'",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:31:23.244163",
+    "ip": "192.168.47.130",
+    "resolved": false
+  },
+  {
+    "id": 1778734677026,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 192.168.47.130",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:27:57.022481",
+    "ip": "192.168.47.130",
+    "resolved": false
+  },
+  {
+    "id": 1778733606580,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<script>alert(1)</script>'",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:10:06.575232",
+    "ip": "192.168.47.130",
+    "resolved": false
+  },
+  {
+    "id": 1778732972982,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 192.168.47.130",
+    "severity": "high",
+    "timestamp": "2026-05-14T09:59:32.978561",
+    "ip": "192.168.47.130",
+    "resolved": false
+  },
+  {
+    "id": 1778732216066,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 192.168.47.130",
+    "severity": "high",
+    "timestamp": "2026-05-14T09:46:56.045235",
+    "ip": "192.168.47.130",
+    "resolved": false
+  },
+  {
+    "id": 1778732029107,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'",
+    "severity": "critical",
+    "timestamp": "2026-05-14T09:43:49.099495",
+    "ip": "192.168.47.130",
+    "resolved": false
+  }
+]

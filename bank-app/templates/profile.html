@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Profile — NexaBank{% endblock %}
+{% block content %}
+<div style="max-width:1100px;margin:0 auto;padding:32px 40px;">
+  <div style="background:var(--dark2);border:1px solid var(--border);border-radius:18px;padding:36px;display:flex;gap:28px;align-items:center;margin-bottom:24px;">
+    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));display:flex;align-items:center;justify-content:center;font-size:32px;color:#0A0C10;font-weight:700;flex-shrink:0">
+      {{ user.name[0] if user else 'U' }}
+    </div>
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:4px">{{ user.name }}</div>
+      <div style="color:var(--muted);font-size:13px;margin-bottom:12px">{{ user.email }}</div>
+      <div style="display:flex;gap:10px">
+        <span style="background:rgba(201,168,76,0.15);color:var(--gold);padding:5px 13px;border-radius:100px;font-size:11px;font-weight:600">Premium Member</span>
+        <span style="background:rgba(76,175,130,0.15);color:var(--green);padding:5px 13px;border-radius:100px;font-size:11px;font-weight:600">✓ KYC Verified</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="panel">
+      <div style="font-size:15px;font-weight:600;margin-bottom:20px">Personal Information</div>
+      <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" value="{{ user.name if user else '' }}"></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" value="{{ user.email if user else '' }}"></div>
+      <div class="form-group"><label class="form-label">Account No</label><input class="form-input" value="{{ user.account_no if user else '' }}" readonly></div>
+      <button class="btn-primary" onclick="showToast('Saved','Profile updated','success')">Save Changes</button>
+    </div>
+
+    <div class="panel">
+      <div style="font-size:15px;font-weight:600;margin-bottom:20px">Security Settings</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--dark3);border-radius:10px">
+          <span style="font-size:13px">Two-Factor Auth</span>
+          <span style="color:var(--red);font-size:12px;font-weight:600">Disabled ⚠️</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--dark3);border-radius:10px">
+          <span style="font-size:13px">Login Alerts</span>
+          <span style="color:var(--green);font-size:12px;font-weight:600">Enabled ✓</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--dark3);border-radius:10px">
+          <span style="font-size:13px">Session Timeout</span>
+          <span style="color:var(--green);font-size:12px;font-weight:600">30 min ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

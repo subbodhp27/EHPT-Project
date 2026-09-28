@@ -1,0 +1,461 @@
+[
+  {
+    "id": 1778735374261,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<img src=x onerror=alert(1)>'",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:39:34.261138",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778734930625,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: 'curl -b cookies.txt -X POST http://192.168.47.1:5000/comment -d \"text=<h1>Hacked</h1>\"'",
+    "severity": "medium",
+    "timestamp": "2026-05-14T10:32:10.625737",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778734883244,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert(1)</script>'",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:31:23.244163",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778734677022,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 192.168.47.130",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:27:57.022481",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778733606575,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<script>alert(1)</script>'",
+    "severity": "high",
+    "timestamp": "2026-05-14T10:10:06.575232",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778732972978,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 192.168.47.130",
+    "severity": "high",
+    "timestamp": "2026-05-14T09:59:32.978561",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778732216045,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 192.168.47.130",
+    "severity": "high",
+    "timestamp": "2026-05-14T09:46:56.045235",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778732029099,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'",
+    "severity": "critical",
+    "timestamp": "2026-05-14T09:43:49.099495",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1778731995349,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'",
+    "severity": "critical",
+    "timestamp": "2026-05-14T09:43:15.349283",
+    "resolved": false,
+    "ip": "192.168.47.130"
+  },
+  {
+    "id": 1775642366592,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<script>document.body.style.background='red'</script>'",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:29:26.592677",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775642346574,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: '<b style=\"color:red;font-size:30px\">WARNING: Security Breach!</b>'",
+    "severity": "medium",
+    "timestamp": "2026-04-08T15:29:06.574108",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775642336007,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<img src=x onerror=alert('Hacked!')>'",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:28:56.007994",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775642322778,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<img src=x onerror=alert('Hacked!')>'",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:28:42.778728",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775642257941,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert('XSS: '+document.cookie)</script>'",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:27:37.941727",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775642239553,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-04-08T15:27:19.554004",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775642004852,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-04-08T15:23:24.852321",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775641996853,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 127.0.0.1",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:23:16.853858",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775641982672,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 127.0.0.1",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:23:02.672038",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775641972311,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 127.0.0.1",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:22:52.311870",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775641962404,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 127.0.0.1",
+    "severity": "high",
+    "timestamp": "2026-04-08T15:22:42.404559",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775641735330,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-04-08T15:18:55.330719",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775638911389,
+    "type": "Brute Force",
+    "detail": "Account '' \u2014 multiple failed attempts from 127.0.0.1",
+    "severity": "high",
+    "timestamp": "2026-04-08T14:31:51.389070",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775637783709,
+    "type": "Brute Force",
+    "detail": "Account 'admin' \u2014 multiple failed attempts from 127.0.0.1",
+    "severity": "high",
+    "timestamp": "2026-04-08T14:13:03.709231",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775637440375,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert('XSS: '+document.cookie)</script>'",
+    "severity": "high",
+    "timestamp": "2026-04-08T14:07:20.375865",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775637414854,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: '<h1>Hacked!</h1>'",
+    "severity": "medium",
+    "timestamp": "2026-04-08T14:06:54.854178",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775637398710,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-04-08T14:06:38.710653",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775637130724,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert('XSS: '+document.cookie)</script>'",
+    "severity": "high",
+    "timestamp": "2026-04-08T14:02:10.724180",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775636769557,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: '<b style=\"color:red;font-size:30px\">WARNING: Security Breach!</b>'",
+    "severity": "medium",
+    "timestamp": "2026-04-08T13:56:09.557148",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1775636691031,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-04-08T13:54:51.031998",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1774584669842,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert('XSS: '+document.cookie)</script>'",
+    "severity": "high",
+    "timestamp": "2026-03-27T09:41:09.842530",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1774584619112,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: '<b style=\"color:red;font-size:30px\">WARNING: Security Breach!</b>'",
+    "severity": "medium",
+    "timestamp": "2026-03-27T09:40:19.112285",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1774584584573,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-03-27T09:39:44.573931",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1773334939025,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: '<h1>Page Hacked!</h1>'",
+    "severity": "medium",
+    "timestamp": "2026-03-12T22:32:19.025526",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1773334856497,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'",
+    "severity": "critical",
+    "timestamp": "2026-03-12T22:30:56.498005",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1773334757038,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<script>alert('XSS')</script>'",
+    "severity": "high",
+    "timestamp": "2026-03-12T22:29:17.038713",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1773334696628,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-03-12T22:28:16.628205",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1773334596641,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: ''admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-03-12T22:26:36.641295",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772788789470,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert('XSS: '+document.cookie)</script>'",
+    "severity": "high",
+    "timestamp": "2026-03-06T14:49:49.470093",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772788766695,
+    "type": "HTML Injection",
+    "detail": "HTML Injection in comment: '<u>Underlined injected text</u>'",
+    "severity": "medium",
+    "timestamp": "2026-03-06T14:49:26.695670",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772788631002,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-03-06T14:47:11.002466",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772788599024,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<script>document.body.style.background='red'</script>'",
+    "severity": "high",
+    "timestamp": "2026-03-06T14:46:39.024051",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772788588541,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<img src=x onerror=alert('Hacked!')>'",
+    "severity": "high",
+    "timestamp": "2026-03-06T14:46:28.541252",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772788059424,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: '<img src=x onerror=alert('Hacked!')>'",
+    "severity": "high",
+    "timestamp": "2026-03-06T14:37:39.424030",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772787738366,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-03-06T14:32:18.366423",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772787640381,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-03-06T14:30:40.381915",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772727931399,
+    "type": "Cross-Site Scripting",
+    "detail": "XSS in transfer note: '<script>alert('XSS: '+document.cookie)</script>'",
+    "severity": "high",
+    "timestamp": "2026-03-05T21:55:31.399400",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772727887996,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--'",
+    "severity": "critical",
+    "timestamp": "2026-03-05T21:54:47.996582",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772724621376,
+    "type": "Cross-Site Scripting",
+    "detail": "Stored XSS in comment: <img src=x onerror=alert('Hacked!')>",
+    "severity": "high",
+    "timestamp": "2026-03-05T21:00:21.376164",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772724602459,
+    "type": "SQL Injection",
+    "detail": "SQLi in login username: admin'--",
+    "severity": "critical",
+    "timestamp": "2026-03-05T21:00:02.459078",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772705199137,
+    "type": "CSRF",
+    "detail": "Forged transfer request \u2014 \u20b950000.0 to 'attacker_account_9182' (no CSRF token)",
+    "severity": "critical",
+    "timestamp": "2026-03-05T15:36:39.137136",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  },
+  {
+    "id": 1772705085723,
+    "type": "SQL Injection",
+    "detail": "SQLi in login \u2014 username: 'admin'--' password: 'admin'",
+    "severity": "critical",
+    "timestamp": "2026-03-05T15:34:45.723432",
+    "resolved": false,
+    "ip": "127.0.0.1"
+  }
+]

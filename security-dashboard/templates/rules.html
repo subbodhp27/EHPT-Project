@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}WAF Rules — SecureShield{% endblock %}
+{% block page_title %}Detection Rules{% endblock %}
+{% block content %}
+<div class="panel">
+  <div class="panel-header">
+    <div><div class="panel-title">WAF Detection Rules</div><div class="panel-sub">12 rules protecting NexaBank</div></div>
+    <button onclick="showToast('Rule Added','New rule created and activated','success')" class="topbar-btn">+ Add Rule</button>
+  </div>
+  {% set rules = [
+    ('SQL Injection Pattern Filter',  "Blocks inputs with: ', --, ;, OR, UNION, SELECT, DROP", 'active',   'critical'),
+    ('XSS Script Tag Blocker',        'Blocks script, onerror, onload, javascript: vectors',   'active',   'high'),
+    ('Brute Force Rate Limiter',      'Locks account after 5 failed attempts in 15 minutes',   'active',   'high'),
+    ('HTML Tag Injection Blocker',    'Blocks raw HTML tags like h1, marquee, b, i, font',     'active',   'high'),
+    ('Content Security Policy',       'Restricts scripts to self origin only via CSP header',  'active',   'medium'),
+    ('XSS HTTP Headers',              'Adds X-XSS-Protection: 1; mode=block to all responses','active',   'medium'),
+    ('HttpOnly Cookie Flag',          'Sets HttpOnly and Secure flags on all session cookies', 'active',   'high'),
+    ('Input Length Validation',       'Rejects all inputs exceeding 2048 characters',          'active',   'low'),
+    ('SQL Error Suppression',         'Returns generic errors to prevent SQL schema leakage',  'active',   'medium'),
+    ('Account Lockout Policy',        '30-minute lockout after 10 consecutive failed attempts','active',   'high'),
+    ('IP Reputation Check',           'Block IPs on known malicious threat intel lists',       'inactive', 'medium'),
+    ('Bot Detection CAPTCHA',         'Show CAPTCHA after 3 failed authentication attempts',   'inactive', 'medium'),
+  ] %}
+  {% for name, desc, status, sev in rules %}
+  <div style="display:flex;align-items:center;gap:16px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px">
+    <div style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ 'var(--green)' if status=='active' else 'var(--muted)' }};{{ 'box-shadow:0 0 8px rgba(75,255,165,0.4)' if status=='active' else '' }}"></div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600;margin-bottom:3px">{{ name }}</div>
+      <div style="font-size:12px;color:var(--muted)">{{ desc }}</div>
+    </div>
+    <span class="sev-badge {{ sev }}">{{ sev|upper }}</span>
+    <button onclick="toggleRule(this)" class="resolve-btn" style="{{ 'background:rgba(75,255,165,0.08);border-color:rgba(75,255,165,0.3);color:var(--green)' if status=='active' else 'background:rgba(255,75,110,0.08);border-color:rgba(255,75,110,0.3);color:var(--red)' }}">
+      {{ 'ENABLED' if status=='active' else 'DISABLED' }}
+    </button>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+function toggleRule(btn) {
+  var on = btn.textContent.trim() === 'ENABLED';
+  btn.textContent = on ? 'DISABLED' : 'ENABLED';
+  if (on) {
+    btn.style.cssText = 'background:rgba(255,75,110,0.08);border:1px solid rgba(255,75,110,0.3);color:var(--red);padding:4px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600';
+    showToast('Rule Disabled', 'Detection rule turned off', 'danger');
+  } else {
+    btn.style.cssText = 'background:rgba(75,255,165,0.08);border:1px solid rgba(75,255,165,0.3);color:var(--green);padding:4px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600';
+    showToast('Rule Enabled', 'Detection rule activated', 'success');
+  }
+}
+</script>
+{% endblock %}

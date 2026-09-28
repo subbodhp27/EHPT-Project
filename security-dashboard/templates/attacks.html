@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Attack Log — SecureShield{% endblock %}
+{% block page_title %}Attack Log{% endblock %}
+{% block content %}
+<div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+  <a href="/attacks" class="view-btn {% if filter_status=='all' and filter_type=='all' %}active{% endif %}" style="{% if filter_status=='all' and filter_type=='all' %}border-color:var(--accent);color:var(--accent){% endif %}">All</a>
+  <a href="/attacks?status=active" class="view-btn {% if filter_status=='active' %}active{% endif %}" style="{% if filter_status=='active' %}border-color:var(--red);color:var(--red){% endif %}">Active</a>
+  <a href="/attacks?status=resolved" class="view-btn">Resolved</a>
+  <a href="/attacks?type=SQL+Injection" class="view-btn">SQL Injection</a>
+  <a href="/attacks?type=Cross-Site+Scripting" class="view-btn">XSS</a>
+  <a href="/attacks?type=Brute+Force" class="view-btn">Brute Force</a>
+  <a href="/attacks?type=CSRF" class="view-btn">CSRF</a>
+  <button onclick="fetch('/api/resolve-all',{method:'POST'}).then(()=>location.reload())" class="topbar-btn" style="margin-left:auto">Resolve All</button>
+</div>
+<div class="panel">
+  <div class="panel-header">
+    <div><div class="panel-title">Incident Log</div><div class="panel-sub">{{ logs|length }} incidents</div></div>
+  </div>
+  <table class="atk-table">
+    <thead><tr><th>#</th><th>Type</th><th>Payload / Detail</th><th>Severity</th><th>Source IP</th><th>Timestamp</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td style="font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:10px">#{{ "%03d"|format(loop.index) }}</td>
+        <td>
+          {% if 'SQL' in log.type %}<span class="type-badge sqli">💉 {{ log.type }}</span>
+          {% elif 'XSS' in log.type or 'Script' in log.type %}<span class="type-badge xss">📜 {{ log.type }}</span>
+          {% elif 'Brute' in log.type %}<span class="type-badge brute">🔓 {{ log.type }}</span>
+          {% elif 'CSRF' in log.type %}<span class="type-badge csrf">🎭 {{ log.type }}</span>
+          {% else %}<span class="type-badge other">⚠️ {{ log.type }}</span>{% endif %}
+        </td>
+        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">{{ log.detail }}</td>
+        <td><span class="sev-badge {{ log.severity }}">{{ log.severity|upper }}</span></td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent2)">{{ log.ip or 'unknown' }}</td>
+        <td style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace">{{ log.timestamp[:16] if log.timestamp else '' }}</td>
+        <td>{% if log.resolved %}<span class="status-badge resolved">✓ Resolved</span>{% else %}<span class="status-badge active">⚠ Active</span>{% endif %}</td>
+        <td style="display:flex;gap:6px">
+          <button class="resolve-btn" onclick="resolveAttack({{ log.id }})" {% if log.resolved %}disabled{% endif %}>✓ Fix</button>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:48px">No incidents found</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

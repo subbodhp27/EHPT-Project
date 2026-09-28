@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Overview — SecureShield{% endblock %}
+{% block page_title %}Overview{% endblock %}
+{% block content %}
+<style>
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:22px; }
+.grid-2-1 { display:grid; grid-template-columns:2fr 1fr; gap:18px; margin-bottom:18px; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.atk-bar-wrap { height:4px; background:var(--bg4); border-radius:2px; overflow:hidden; margin-top:4px; }
+.atk-bar { height:100%; border-radius:2px; }
+</style>
+
+{% if stats.active > 0 %}
+<div class="alert-bar">
+  <div class="alert-lbl">⚠️ LIVE THREAT</div>
+  <div class="alert-text">{{ stats.active }} ACTIVE THREAT{{ 's' if stats.active > 1 }} — {{ stats.by_type.keys()|list|join(' | ') }}</div>
+</div>
+{% else %}
+<div class="alert-bar" style="background:rgba(75,255,165,0.05);border-color:rgba(75,255,165,0.15)">
+  <div class="alert-lbl" style="color:var(--green)">✓ SECURE</div>
+  <div class="alert-text">All systems normal — No active threats on NexaBank</div>
+</div>
+{% endif %}
+
+<div class="stats-grid">
+  <div class="stat-card red">
+    <div class="stat-ico">💉</div>
+    <div class="stat-lbl">Total Attacks</div>
+    <div class="stat-val" style="color:var(--red)">{{ stats.total }}</div>
+    <div style="font-size:11px;color:var(--muted)">{{ stats.total }} incident{{ 's' if stats.total != 1 }} logged</div>
+  </div>
+  <div class="stat-card orange">
+    <div class="stat-ico">🔥</div>
+    <div class="stat-lbl">Active Threats</div>
+    <div class="stat-val" style="color:var(--orange)">{{ stats.active }}</div>
+    <div style="font-size:11px;color:{{ 'var(--red)' if stats.active else 'var(--muted)' }}">{{ 'Requires action!' if stats.active else 'All clear' }}</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-ico">✅</div>
+    <div class="stat-lbl">Resolved</div>
+    <div class="stat-val" style="color:var(--green)">{{ stats.resolved }}</div>
+    <div style="font-size:11px;color:var(--muted)">{{ stats.resolved }} fixed</div>
+  </div>
+  <div class="stat-card purple">
+    <div class="stat-ico">🎯</div>
+    <div class="stat-lbl">Critical</div>
+    <div class="stat-val" style="color:var(--purple)">{{ stats.critical }}</div>
+    <div style="font-size:11px;color:var(--muted)">Critical severity</div>
+  </div>
+</div>
+
+<div class="grid-2-1">
+  <div class="panel">
+    <div class="panel-header">
+      <div><div class="panel-title">Recent Attacks</div><div class="panel-sub">Latest detected incidents</div></div>
+      <a href="/attacks" class="view-btn">View All →</a>
+    </div>
+    <table class="atk-table">
+      <thead>
+        <tr><th>Type</th><th>Detail</th><th>Severity</th><th>Time</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td>
+            {% if 'SQL' in log.type %}<span class="type-badge sqli">💉 SQLi</span>
+            {% elif 'XSS' in log.type or 'Script' in log.type %}<span class="type-badge xss">📜 XSS</span>
+            {% elif 'Brute' in log.type %}<span class="type-badge brute">🔑 Brute</span>
+            {% elif 'HTML' in log.type %}<span class="type-badge html">🖊️ HTML</span>
+            {% else %}<span class="type-badge other">⚠️ {{ log.type }}</span>{% endif %}
+          </td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">{{ log.detail }}</td>
+          <td><span class="sev-badge {{ log.severity }}">{{ log.severity|upper }}</span></td>
+          <td style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace">{{ log.timestamp[11:19] if log.timestamp else '' }}</td>
+          <td>{% if log.resolved %}<span class="status-badge resolved">✓ Resolved</span>{% else %}<span class="status-badge active">⚠ Active</span>{% endif %}</td>
+          <td><button class="resolve-btn" onclick="resolveAttack({{ log.id }})" {% if log.resolved %}disabled{% endif %}>✓ Fix</button></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:40px">No attacks yet — Open NexaBank and try attacks!</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">Attack Types</div></div>
+    {% if stats.by_type %}
+      {% set max_count = stats.by_type.values()|list|max %}
+      {% for type, count in stats.by_type.items() %}
+        {% set bar_pct = (count / max_count * 100) | int ~ '%' %}
+        {% if 'SQL' in type %}
+          {% set bar_color = 'var(--red)' %}{% set type_icon = '💉' %}
+        {% elif 'XSS' in type or 'Script' in type %}
+          {% set bar_color = 'var(--purple)' %}{% set type_icon = '📜' %}
+        {% elif 'Brute' in type %}
+          {% set bar_color = 'var(--orange)' %}{% set type_icon = '🔑' %}
+        {% elif 'HTML' in type %}
+          {% set bar_color = 'var(--yellow)' %}{% set type_icon = '🖊️' %}
+        {% else %}
+          {% set bar_color = 'var(--accent)' %}{% set type_icon = '⚠️' %}
+        {% endif %}
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(99,120,255,0.06)">
+          <div style="font-size:18px;width:32px;height:32px;background:var(--bg3);border-radius:7px;display:flex;align-items:center;justify-content:center">{{ type_icon }}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:600;margin-bottom:3px">{{ type }}</div>
+            <div class="atk-bar-wrap">
+              <div class="atk-bar" style="width:{{ bar_pct }};background:{{ bar_color }}"></div>
+            </div>
+          </div>
+          <div style="font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;color:{{ bar_color }}">{{ count }}</div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div style="color:var(--muted);font-size:13px;text-align:center;padding:40px 0">No data yet</div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">Top Attacker IPs</div></div>
+    {% if stats.by_ip %}
+      {% for ip, count in stats.by_ip.items() %}
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(99,120,255,0.06)">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent2)">{{ ip }}</div>
+          <div style="font-size:11px;color:var(--muted)">Pune, Maharashtra, IN</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--red)">{{ count }} attacks</span>
+          <button onclick="showToast('IP Blocked','{{ ip }} has been blocked','success')" style="padding:4px 10px;border:1px solid rgba(255,75,110,0.3);background:rgba(255,75,110,0.08);color:var(--red);border-radius:5px;cursor:pointer;font-size:11px;font-weight:600">Block</button>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div style="color:var(--muted);font-size:13px;text-align:center;padding:30px 0">No suspicious IPs</div>
+    {% endif %}
+  </div>
+
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">Severity Distribution</div></div>
+    {% set sevs = {'critical':0,'high':0,'medium':0,'low':0} %}
+    {% for log in logs %}
+      {% if log.severity in sevs %}
+        {% set _ = sevs.update({log.severity: sevs[log.severity]+1}) %}
+      {% endif %}
+    {% endfor %}
+    {% set total_sev = logs|length or 1 %}
+    {% for sev, count in sevs.items() %}
+      {% set pct = (count / total_sev * 100) | int ~ '%' %}
+      {% if sev == 'critical' %}{% set sev_color = 'var(--red)' %}
+      {% elif sev == 'high' %}{% set sev_color = 'var(--orange)' %}
+      {% elif sev == 'medium' %}{% set sev_color = 'var(--yellow)' %}
+      {% else %}{% set sev_color = 'var(--green)' %}{% endif %}
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="width:64px;font-size:11px;text-transform:uppercase;font-weight:700;color:{{ sev_color }}">{{ sev }}</div>
+        <div style="flex:1;height:7px;background:var(--bg4);border-radius:4px;overflow:hidden">
+          <div style="width:{{ pct }};height:100%;background:{{ sev_color }};border-radius:4px"></div>
+        </div>
+        <div style="font-size:12px;font-family:'JetBrains Mono',monospace;width:18px;text-align:right">{{ count }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
